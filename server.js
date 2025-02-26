@@ -1,8 +1,12 @@
 const employees = require('./employees.js')
 
 
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
+app.use(express.json());
+let idNumber = 3;
+
+
 
 app.get('/', (req, res) => {
   res.send('<h1>Welcome</h1>')
@@ -23,8 +27,18 @@ app.get('/api/v1/employees/:employeeId', (req, res) => {
   res.send(foundEmployee)
 })
 
-app.get('employees/random', (res,req) => {
-  res.send('<h1>Employees</h1>')
+
+app.post('/employees', (req, res) => {
+  console.log(req.body)
+
+  const { name } = req.body;
+   employees.push({
+    id: idNumber,
+    name
+  })
+
+  idNumber++
+  res.send(employees)
 })
 
 app.listen(3000)
