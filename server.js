@@ -28,10 +28,16 @@ app.get('/api/v1/employees/:employeeId', (req, res) => {
 })
 
 
-app.post('/employees', (req, res) => {
+app.post('/employees', (req, res, next) => {
   console.log(req.body)
-
   const { name } = req.body;
+  if(!name) {
+  
+const error = new Error("name not provided");
+next(error)
+}
+
+
    employees.push({
     id: idNumber,
     name
@@ -40,5 +46,9 @@ app.post('/employees', (req, res) => {
   idNumber++
   res.send(employees)
 })
+
+app.use((err, req, res) => {
+  console.log(err)
+});
 
 app.listen(3000)
